@@ -1,0 +1,45 @@
+{
+  "height": "750px",
+  "width": "1500px",
+  "physics": {
+    "enabled": false,
+    "solver": "forceAtlas2Based",
+    "minVelocity": 1,
+    "maxVelocity": 100,
+    "stabilization": {
+      "enabled": false,
+      "fit": false
+    },
+    "timestep": 0.5
+  },
+  "layout": {
+    "hierarchical": {
+      "enabled": true,
+      "levelSeparation": 150,
+      "nodeSpacing": 100,
+      "treeSpacing": 200,
+      "blockShifting": true,
+      "edgeMinimization": true,
+      "parentCentralization": true,
+      "direction": "LR",
+      "sortMethod": "directed",
+      "shakeTowards": "roots"
+    }
+  },
+  "groups": null,
+  "minVelocity": 1,
+  "maxVelocity": 100,
+  "stabilization": false,
+  "fit": true,
+  "timestep": 0.5,
+  "solver": "forceAtlas2Based",
+  "levelSeparation": 150,
+  "nodeSpacing": 100,
+  "treeSpacing": 200,
+  "blockShifting": true,
+  "edgeMinimization": true,
+  "parentCentralization": true,
+  "direction": "RL",
+  "sortMethod": "directed",
+  "shakeTowards": "roots"
+}

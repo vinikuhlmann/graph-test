@@ -1,8 +1,26 @@
 import pandas as pd
 import streamlit as st
 from streamlit_agraph import agraph, Node, Edge, Config, ConfigBuilder
+import time
 
 st.set_page_config(layout="wide")
+
+# Session state values to track the order of filter selection
+if "confirmed" not in st.session_state:
+    st.session_state["confirmed"] = []
+st.session_state["confirmed"] = st.session_state.get("confirmed", [])
+st.session_state["confirmed"] = (
+    st.session_state["confirmed"] if "confirmed" in st.session_state else []
+)
+time.sleep(0.1)
+
+if "last_edited" not in st.session_state:
+    st.session_state["last_edited"] = None
+st.session_state["last_edited"] = st.session_state.get("last_edited", None)
+st.session_state["last_edited"] = (
+    st.session_state["last_edited"] if "last_edited" in st.session_state else None
+)
+time.sleep(0.1)
 
 
 def get_score(row):
@@ -28,15 +46,16 @@ def get_score(row):
     ):
         multiplier = 2
 
-    return multiplier * 1 + (
-        (1 if row["Convite Linkedin Enviado"] == "Sim" else 0)
+    return multiplier * (
+        1
+        + (1 if row["Convite Linkedin Enviado"] == "Sim" else 0)
         + (1 if row["Snovio Enviado ?"] == "Sim" else 0)
         + (3 if row["Já é Conexão Linkedin?"] == "Sim" else 0)
     )
 
 
 if "df" not in st.session_state:
-    filepath = "/home/vinikuhlmann/Desktop/graph-test/Planilha exemplo pessoas.csv"
+    filepath = "./Planilha exemplo pessoas.csv"
     df = pd.read_csv(filepath)
     df["Nome completo"] = df["Nome"] + " " + df["Sobrenome"]
     df.drop(columns=["Nome", "Sobrenome"], inplace=True)
@@ -45,11 +64,6 @@ if "df" not in st.session_state:
 
 df = st.session_state.df
 df = df.copy()
-
-# Session state values to track the order of filter selection
-if "confirmed" not in st.session_state:
-    st.session_state.confirmed = []
-    st.session_state.last_edited = None
 
 
 def last_edited(i, col):

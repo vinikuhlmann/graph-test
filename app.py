@@ -126,8 +126,8 @@ def confirmed(i, col):
 # according to the order of user edits, but columns will keep them displaying
 # in their original order for the user)
 st.markdown("## Grafo")
-cols = st.columns(4)
-selected_cols = ["Nome da empresa", "Cargo"]
+cols = st.columns(5)
+selected_cols = ["Nome da empresa", "Indústria da empresa", "Cargo"]
 selected = {col: [] for col in selected_cols}
 
 # Confirmed filters
@@ -204,27 +204,31 @@ def get_graph():
         )
         edges.append(Edge(source=empresa, target="@".join((empresa, cargo))))
     for row in df.to_dict(orient="records"):
+        pessoa, score, empresa, cargo = [
+            row[col] for col in ("Nome completo", "Score", "Nome da empresa", "Cargo")
+        ]
+        cargo = "@".join((empresa, cargo))
         if row["Score"] < min_score:
             continue
         nodes.append(
             Node(
-                id=row["Nome completo"],
-                label=f"{row['Nome completo']}\n(score={row['Score']})",
-                size=row["Score"],
-                group=row["Cargo"],
+                id=pessoa,
+                label=f"{pessoa}\n(score={score})",
+                size=score,
+                group=row["Nome da empresa"],
             )
         )
         edges.append(
             Edge(
-                source="@".join((row["Nome da empresa"], row["Cargo"])),
-                target=row["Nome completo"],
+                source=cargo,
+                target=pessoa,
             )
         )
 
     return nodes, edges
 
 
-mode = cols[2].selectbox("Tipo de grafo", ["Radial", "Hierárquico"])
+mode = cols[4].selectbox("Tipo de grafo", ["Radial", "Hierárquico"])
 nodes, edges = get_graph()
 
 # config_builder = ConfigBuilder(nodes)
